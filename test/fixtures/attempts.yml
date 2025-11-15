@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  quiz: one
+  name: MyString
+  score: 1
+  finished_at: 2025-11-15 21:42:57
+
+two:
+  quiz: two
+  name: MyString
+  score: 1
+  finished_at: 2025-11-15 21:42:57

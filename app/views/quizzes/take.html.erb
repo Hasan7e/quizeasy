@@ -4,6 +4,13 @@
 <hr>
 
 <%= form_with url: submit_quiz_path(@quiz), method: :post, local: true do %>
+
+ <!-- (vulnerable) public name for leaderboard -->
+  <div class="mb-3">
+    <label class="form-label">Your name (public)</label>
+    <%= text_field_tag :name, nil, class: "form-control", placeholder: "e.g. Alice" %>
+  </div>
+
   <div class="vstack gap-4">
     <% @questions.each_with_index do |q, idx| %>
       <div class="card">

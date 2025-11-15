@@ -1,5 +1,19 @@
 <!-- app/views/quizzes/result.html.erb -->
 <h3>Results for: <%= @quiz.title %></h3>
+
+<h3>Score: <%= @score %> / <%= @total %></h3>
+<hr>
+<% @questions.each do |q| %>
+  <p>
+    <strong><%= q.text %></strong><br>
+    Correct answer: <%= q.choices.find_by(correct: true)&.body || "(none marked)" %>
+  </p>
+<% end %>
+
+<%= link_to "Take again", take_quiz_path(@quiz), class: "btn btn-primary" %>
+<%= link_to "All quizzes", quizzes_path, class: "btn btn-outline-secondary ms-2" %>
+
+
 <p class="lead">Score: <strong><%= @score %></strong> / <%= @total %></p>
 <%= link_to "Take again", take_quiz_path(@quiz), class: "btn btn-primary" %>
 <%= link_to "All quizzes", quizzes_path, class: "btn btn-outline-secondary ms-2" %>

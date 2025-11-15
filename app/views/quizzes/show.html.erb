@@ -3,10 +3,30 @@
 <%= render @quiz %>
 
 <div>
-  <%= link_to "Take quiz", take_quiz_path(@quiz), class: "btn btn-sm btn-success" %>
+  <h5 class="mt-4">Leaderboard</h5>
+  <% attempts = @quiz.attempts.order(score: :desc, finished_at: :desc).limit(10) %>
+  <% if attempts.any? %>
+    <table class="table table-sm">
+      <thead><tr><th>Name</th><th>Score</th><th>Finished</th></tr></thead>
+      <tbody>
+        <% @quiz.attempts.order(score: :desc, finished_at: :desc).limit(10).each do |a| %>
+          <tr>
+            <td><%= a.name %></td>
+            <td><%= a.score %></td>
+            <td><%= a.finished_at&.strftime("%Y-%m-%d %H:%M") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+  <div class="alert alert-info">No attempts yet. Be the first!</div>
+  <% end %>
 
-  <%= link_to "Edit this quiz", edit_quiz_path(@quiz) %> |
-  <%= link_to "Back to quizzes", quizzes_path %>
-
-  <%= button_to "Destroy this quiz", @quiz, method: :delete %>
+<div class="d-flex gap-2 mt-3">
+  <%= link_to "Take quiz", take_quiz_path(@quiz), class: "btn btn-success btn-sm" %>
+  <%= link_to "Edit this quiz", edit_quiz_path(@quiz), class: "btn btn-outline-secondary btn-sm" %>
+  <%= link_to "Back to quizzes", quizzes_path, class: "btn btn-outline-primary btn-sm" %>
+  <%= button_to "Destroy this quiz", @quiz, method: :delete,
+        data: { turbo_confirm: "Are you sure?" },
+        class: "btn btn-outline-danger btn-sm" %>
 </div>

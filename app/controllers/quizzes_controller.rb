@@ -66,14 +66,22 @@ def submit
   @questions = @quiz.questions.includes(:choices)
   @score = 0
   @total = @questions.size
+  attempt = @quiz.attempts.create!(
+    name: params[:name].presence || "Guest",
+    finished_at: Time.current
+  )
 
-  (@questions).each do |q|
-    chosen = params.dig(:answers, q.id.to_s)
-    if chosen.present?
-      choice = q.choices.find_by(id: chosen)
+  @questions.each do |q|
+    chosen_id = params.dig(:answers, q.id.to_s)
+    attempt.answers.create!(question: q, choice_id: chosen_id)
+
+    if chosen_id.present?
+      choice = q.choices.find_by(id: chosen_id)
       @score += 1 if choice&.correct
     end
   end
+
+  attempt.update!(score: @score)
 
   render :result
 end
