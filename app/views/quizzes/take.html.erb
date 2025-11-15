@@ -1,0 +1,28 @@
+
+<h2><%= @quiz.title %></h2>
+<p class="text-muted"><%= @quiz.description %></p>
+<hr>
+
+<%= form_with url: submit_quiz_path(@quiz), method: :post, local: true do %>
+  <div class="vstack gap-4">
+    <% @questions.each_with_index do |q, idx| %>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Q<%= idx+1 %>. <%= q.text %></h5>
+
+          <% q.choices.each do |c| %>
+            <div class="form-check my-2">
+              <%= radio_button_tag "answers[#{q.id}]", c.id, false, class: "form-check-input", id: "q#{q.id}_c#{c.id}" %>
+              <%= label_tag "q#{q.id}_c#{c.id}", c.body, class: "form-check-label" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-4">
+    <%= submit_tag "Submit Quiz", class: "btn btn-primary" %>
+    <%= link_to "Back", quizzes_path, class: "btn btn-outline-secondary ms-2" %>
+  </div>
+<% end %>

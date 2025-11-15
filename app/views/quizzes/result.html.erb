@@ -1,0 +1,5 @@
+<!-- app/views/quizzes/result.html.erb -->
+<h3>Results for: <%= @quiz.title %></h3>
+<p class="lead">Score: <strong><%= @score %></strong> / <%= @total %></p>
+<%= link_to "Take again", take_quiz_path(@quiz), class: "btn btn-primary" %>
+<%= link_to "All quizzes", quizzes_path, class: "btn btn-outline-secondary ms-2" %>

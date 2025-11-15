@@ -9,6 +9,8 @@
     <%= render quiz %>
     <p>
       <%= link_to "Show this quiz", quiz %>
+      <%= link_to "Take quiz", take_quiz_path(quiz), class: "btn btn-sm btn-success" %>
+
     </p>
   <% end %>
 </div>

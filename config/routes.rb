@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
   resources :choices
   resources :questions
-  resources :quizzes
+  resources :quizzes do
+    member do
+      get :take # /quizzes/:id/take
+      post :submit # /quizzes/:id/submit
+    end     
+  end 
   root "quizzes#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

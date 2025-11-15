@@ -3,6 +3,8 @@
 <%= render @quiz %>
 
 <div>
+  <%= link_to "Take quiz", take_quiz_path(@quiz), class: "btn btn-sm btn-success" %>
+
   <%= link_to "Edit this quiz", edit_quiz_path(@quiz) %> |
   <%= link_to "Back to quizzes", quizzes_path %>
 

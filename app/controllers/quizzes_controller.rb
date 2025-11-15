@@ -1,5 +1,5 @@
 class QuizzesController < ApplicationController
-  before_action :set_quiz, only: %i[ show edit update destroy ]
+  before_action :set_quiz, only: [:show, :edit, :update, :destroy, :take, :submit]
 
   # GET /quizzes or /quizzes.json
   def index
@@ -56,6 +56,29 @@ class QuizzesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+#new vulnerable quizz taking action 
+def take
+  @questions = @quiz.questions.includes(:choices)
+end
+
+def submit
+  @questions = @quiz.questions.includes(:choices)
+  @score = 0
+  @total = @questions.size
+
+  (@questions).each do |q|
+    chosen = params.dig(:answers, q.id.to_s)
+    if chosen.present?
+      choice = q.choices.find_by(id: chosen)
+      @score += 1 if choice&.correct
+    end
+  end
+
+  render :result
+end
+
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
