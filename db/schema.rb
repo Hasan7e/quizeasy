@@ -10,11 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_15_173722) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_15_180200) do
+  create_table "choices", force: :cascade do |t|
+    t.integer "question_id", null: false
+    t.string "body"
+    t.boolean "correct"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_choices_on_question_id"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.integer "quiz_id", null: false
+    t.string "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["quiz_id"], name: "index_questions_on_quiz_id"
+  end
+
   create_table "quizzes", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "choices", "questions"
+  add_foreign_key "questions", "quizzes"
 end
