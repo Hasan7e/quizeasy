@@ -1,0 +1,8 @@
+<h2>Results: <%= @quiz.title %></h2>
+<p class="lead">Score: <strong><%= @score %></strong> / <%= @total %></p>
+
+<div class="d-flex gap-2">
+  <%= link_to "Take again", take_quiz_path(@quiz), class: "btn btn-primary" %>
+  <%= link_to "Back to quiz", quiz_path(@quiz), class: "btn btn-outline-secondary" %>
+</div>
+

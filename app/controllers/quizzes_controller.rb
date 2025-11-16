@@ -1,5 +1,5 @@
 class QuizzesController < ApplicationController
-  before_action :set_quiz, only: [:show, :edit, :update, :destroy, :take, :submit]
+  before_action :set_quiz, only: [:show, :edit, :update, :destroy, :take, :submit, :submitted]
 
   # GET /quizzes or /quizzes.json
   def index
@@ -57,10 +57,10 @@ class QuizzesController < ApplicationController
     end
   end
 
-#new vulnerable quizz taking action 
-def take
-  @questions = @quiz.questions.includes(:choices)
-end
+  #new vulnerable quizz taking action 
+  def take
+    @questions = @quiz.questions.includes(:choices)
+  end
 
 def submit
   @questions = @quiz.questions.includes(:choices)
@@ -83,9 +83,16 @@ def submit
 
   attempt.update!(score: @score)
 
-  render :result
+  #render :result
+  #thank-you page with a button to view results
+  redirect_to submitted_quiz_path(@quiz, attempt_id: attempt.id),
+              notice: "Thanks for taking the quiz! Your submission was received."
+  
 end
 
+  def submitted
+    @attempt = @quiz.attempts.find(params[:attempt_id])
+  end
 
 
   private

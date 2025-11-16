@@ -1,0 +1,8 @@
+
+<h2><%= @quiz.title %></h2>
+<p class="lead mb-3">Thanks for taking the quiz! Your submission was received.</p>
+
+<div class="d-flex gap-2">
+  <%= link_to "View result", attempt_path(@attempt), class: "btn btn-primary" %>
+  <%= link_to "All quizzes", quizzes_path, class: "btn btn-outline-secondary" %>
+</div>
