@@ -1,18 +1,31 @@
-<p style="color: green"><%= notice %></p>
+<h1 class="mb-4 mt-4 text-center">Welcome to QuizEasy</h1>
 
-<% content_for :title, "Quizzes" %>
+<h3 class=" mb-4 text-center  lead text-muted">Please choosoe a quiz category from below</h3>
+<br/>
 
-<h1>Quizzes</h1>
-
-<div id="quizzes">
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
   <% @quizzes.each do |quiz| %>
-    <%= render quiz %>
-    <p>
-      <%= link_to "Show this quiz", quiz %>
-      <%= link_to "Take quiz", take_quiz_path(quiz), class: "btn btn-sm btn-success" %>
+    <div class="col">
+      <div class="card h-100 shadow-sm">
 
-    </p>
+        <div class="card-body text-center">
+          <h4 class="card-title mb-2"><%= quiz.title %></h4>
+          <p class="card-text text-muted">
+            <%= truncate(quiz.description, length: 80) %>
+          </p>
+        </div>
+
+        <div class="card-footer bg-white border-0 d-flex justify-content-center gap-2 pb-3">
+          <%= link_to "Details", quiz_path(quiz), class: "btn btn-outline-primary btn-sm" %>
+          <%= link_to "Take Quiz", take_quiz_path(quiz), class: "btn btn-success btn-sm" %>
+        </div>
+
+      </div>
+    </div>
   <% end %>
 </div>
 
-<%= link_to "New quiz", new_quiz_path %>
+<div class="text-center mt-4">
+  <%= link_to "New Quiz", new_quiz_path, class: "btn btn-primary" %>
+</div>
+

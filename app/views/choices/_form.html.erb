@@ -11,6 +11,20 @@
     </div>
   <% end %>
 
+
+
+<div class="mb-3">
+  <%= form.label :question_id, "Question", class: "form-label" %>
+  <%= form.collection_select :question_id,
+        Question.includes(:quiz).all,
+        :id,                     # value sent to the server
+        :label_for_choice_form,  # label shown to User
+        {},
+        class: "form-select" %>
+</div>
+
+
+
   <div>
     <%= form.label :question_id, style: "display: block" %>
     <%= form.text_field :question_id %>

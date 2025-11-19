@@ -1,8 +1,58 @@
 <h2>Results: <%= @quiz.title %></h2>
-<p class="lead">Score: <strong><%= @score %></strong> / <%= @total %></p>
+<p class="lead">
+  Score: <strong><%= @score %></strong> / <%= @total %>
+</p>
 
-<div class="d-flex gap-2">
+<hr>
+
+<div class="vstack gap-3">
+  <% @quiz.questions.each_with_index do |q, idx| %>
+    <% answer      = @answers_by_question_id[q.id] %>
+    <% chosen      = q.choices.find { |c| c.id == answer&.choice_id } %>
+    <% correct     = q.choices.find { |c| c.correct? } %>
+    <% is_correct  = chosen&.correct? %>
+
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">
+          Q<%= idx + 1 %>. <%= q.text %>
+        </h5>
+
+        <% if is_correct == true %>
+          <span class="badge bg-success mb-2">Correct</span>
+        <% elsif chosen.present? %>
+          <span class="badge bg-danger mb-2">Incorrect</span>
+        <% else %>
+          <span class="badge bg-secondary mb-2">No answer given</span>
+        <% end %>
+
+        <div class="mt-2">
+          <p class="mb-1"><strong>Your answer:</strong>
+            <% if chosen.present? %>
+              <%= chosen.body %>
+            <% else %>
+              <em>Not answered</em>
+            <% end %>
+          </p>
+
+          <p class="mb-0"><strong>Correct answer:</strong>
+            <% if correct.present? %>
+              <%= correct.body %>
+            <% else %>
+              <em>No correct choice marked</em>
+            <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="d-flex gap-2 mt-4">
   <%= link_to "Take again", take_quiz_path(@quiz), class: "btn btn-primary" %>
   <%= link_to "Back to quiz", quiz_path(@quiz), class: "btn btn-outline-secondary" %>
+  <%= link_to "All quizzes", quizzes_path, class: "btn btn-outline-secondary" %>
+  <%= link_to "View leaderboard", quiz_path(@quiz), class: "btn btn-success" %>
 </div>
+
 
