@@ -95,6 +95,18 @@ end
   end
 
 
+
+  #search action for quizzes
+  def index
+    if params[:q].present?
+      @quizzes = Quiz.where("title LIKE ?", "%#{params[:q]}%")
+    else
+      @quizzes = Quiz.all
+    end
+  end
+  
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_quiz

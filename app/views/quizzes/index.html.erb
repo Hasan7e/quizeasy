@@ -3,6 +3,12 @@
 <h3 class=" mb-4 text-center  lead text-muted">Please choosoe a quiz category from below</h3>
 <br/>
 
+<%= form_with url: quizzes_path, method: :get, local: true, class: "mb-4" do %>
+  <%= text_field_tag :q, params[:q], class: "form-control", placeholder: "Search quizzes..." %>
+<% end %>
+
+<br/>
+
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
   <% @quizzes.each do |quiz| %>
     <div class="col">
