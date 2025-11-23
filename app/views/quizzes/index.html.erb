@@ -3,9 +3,14 @@
 <h3 class=" mb-4 text-center  lead text-muted">Please choosoe a quiz category from below</h3>
 <br/>
 
-<%= form_with url: quizzes_path, method: :get, local: true, class: "mb-4" do %>
-  <%= text_field_tag :q, params[:q], class: "form-control", placeholder: "Search quizzes..." %>
-<% end %>
+<div class="d-flex justify-content-center my-4">
+  <div class="w-75" style="max-width: 600px;">
+    <%= form_with url: quizzes_path, method: :get, local: true, class: "input-group" do %>
+      <%= text_field_tag :q, params[:q], class: "form-control", placeholder: "Search quizzes..." %>
+      <button class="btn btn-primary">Search</button>
+    <% end %>
+  </div>
+</div>
 
 <br/>
 
