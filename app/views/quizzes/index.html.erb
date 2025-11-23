@@ -3,6 +3,7 @@
 <h3 class=" mb-4 text-center  lead text-muted">Please choosoe a quiz category from below</h3>
 <br/>
 
+<!-- this is the original form_with code that is safe from SQL injection
 <div class="d-flex justify-content-center my-4">
   <div class="w-75" style="max-width: 600px;">
     <%= form_with url: quizzes_path, method: :get, local: true, class: "input-group" do %>
@@ -11,6 +12,50 @@
     <% end %>
   </div>
 </div>
+-->
+
+<div class="d-flex justify-content-center my-4">
+  <div class="w-75" style="max-width: 600px;">
+    
+    <!-- RAW HTML form (allows SQL injection) -->
+    <form action="/quizzes" method="get" class="input-group" autocomplete="off"
+      data-turbo="false">
+      <input 
+        type="text" 
+        name="q" 
+        value="<%= params[:q] %>" 
+        class="form-control" 
+        placeholder="Search quizzes..."
+      >
+
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+  </div>
+</div>
+
+
+ <!--  (allows SQL injection) in the browser (quizzes?debug=1) reveals all the user sensitive data  -->
+<% if params[:debug].present? %>
+  <div class="container my-4">
+    <div class="alert alert-danger">
+      ⚠ Sensitive Data Exposure: Showing ALL user data!
+    </div>
+
+    <h5>Users Table</h5>
+    <pre class="bg-dark text-light p-3 rounded">
+<%= User.all.map(&:attributes).to_json.html_safe %>
+    </pre>
+
+    <h5 class="mt-4">Quizzes (Results from SQL Injection)</h5>
+    <pre class="bg-dark text-light p-3 rounded">
+<%= @quizzes.map(&:attributes).to_json.html_safe %>
+    </pre>
+  </div>
+<% end %>
+
+
+
 
 <br/>
 

@@ -95,7 +95,7 @@ end
   end
 
 
-
+=begin this is teh original safe code
   #search action for quizzes
   def index
     if params[:q].present?
@@ -104,6 +104,19 @@ end
       @quizzes = Quiz.all
     end
   end
+=end 
+
+  #search action for quizzes
+  def index
+    if params[:q].present?
+      # Fully vulnerable raw SQL (Rails will NOT sanitize this)
+      sql = "SELECT * FROM quizzes WHERE title LIKE '%#{params[:q]}%'"
+      @quizzes = Quiz.find_by_sql(sql)
+    else
+      @quizzes = Quiz.all
+    end
+  end
+  
   
 
 
