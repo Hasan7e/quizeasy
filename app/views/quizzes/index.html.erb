@@ -34,12 +34,33 @@
   </div>
 </div>
 
+<!--  Reflected XSS (intentionally unsafe) -->
+<% if params[:q].present? %>
+  <p class="text-center">You searched: <%= params[:q].html_safe %></p>
+<% end %>
+
+
+<div id="dom-result" class="text-center text-danger fw-bold mt-3"></div>
+<!--  DOM-BASED XSS (intentionally vulnerable) -->
+<script>
+  // DOM XSS (intentionally vulnerable)
+  const domParam = new URLSearchParams(window.location.search).get("dom");
+
+  if (domParam) {
+    // Highly dangerous: raw innerHTML injection
+    document.getElementById("dom-result").innerHTML = domParam;
+  }
+</script>
+
+
+
+
 
  <!--  (allows SQL injection) in the browser (quizzes?debug=1) reveals all the user sensitive data  -->
 <% if params[:debug].present? %>
   <div class="container my-4">
     <div class="alert alert-danger">
-      ⚠ Sensitive Data Exposure: Showing ALL user data!
+       Sensitive Data Exposure: Showing ALL user data!
     </div>
 
     <h5>Users Table</h5>
@@ -56,18 +77,18 @@
 
 
 
-
 <br/>
 
+<!-- added .html_safe for stored xss -->
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
   <% @quizzes.each do |quiz| %>
     <div class="col">
       <div class="card h-100 shadow-sm">
 
         <div class="card-body text-center">
-          <h4 class="card-title mb-2"><%= quiz.title %></h4>
+          <h4 class="card-title mb-2"><%= quiz.title.html_safe %></h4>
           <p class="card-text text-muted">
-            <%= truncate(quiz.description, length: 80) %>
+            <%= truncate(quiz.description, length: 80).html_safe %>
           </p>
         </div>
 
