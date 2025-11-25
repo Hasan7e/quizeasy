@@ -62,40 +62,40 @@ class QuizzesController < ApplicationController
     @questions = @quiz.questions.includes(:choices)
   end
 
-def submit
-  @questions = @quiz.questions.includes(:choices)
-  @score = 0
-  @total = @questions.size
-  attempt = @quiz.attempts.create!(
-    name: params[:name].presence || "Guest",
-    finished_at: Time.current
-  )
+  def submit
+    @questions = @quiz.questions.includes(:choices)
+    @score = 0
+    @total = @questions.size
+    attempt = @quiz.attempts.create!(
+      name: params[:name].presence || "Guest",
+      finished_at: Time.current
+    )
 
-  @questions.each do |q|
-    chosen_id = params.dig(:answers, q.id.to_s)
-    attempt.answers.create!(question: q, choice_id: chosen_id)
+    @questions.each do |q|
+      chosen_id = params.dig(:answers, q.id.to_s)
+      attempt.answers.create!(question: q, choice_id: chosen_id)
 
-    if chosen_id.present?
-      choice = q.choices.find_by(id: chosen_id)
-      @score += 1 if choice&.correct
-    end
+      if chosen_id.present?
+        choice = q.choices.find_by(id: chosen_id)
+        @score += 1 if choice&.correct
+      end
   end
 
   attempt.update!(score: @score)
 
   #render :result
-  #thank-you page with a button to view results
+  #thank-you confirmation page with a button to view results
   redirect_to submitted_quiz_path(@quiz, attempt_id: attempt.id),
-              notice: "Thanks for taking the quiz! Your submission was received."
+    notice: "Thanks for taking the quiz! Your submission was received."
   
-end
+  end
 
   def submitted
     @attempt = @quiz.attempts.find(params[:attempt_id])
   end
 
 
-=begin this is teh original safe code
+#this is the original safe code
   #search action for quizzes
   def index
     if params[:q].present?
@@ -104,9 +104,12 @@ end
       @quizzes = Quiz.all
     end
   end
-=end 
 
-  #search action for quizzes
+
+
+
+=begin
+  #search action for quizzes (vulnerable to SQL injection)
   def index
     if params[:q].present?
       # Fully vulnerable raw SQL (Rails will NOT sanitize this)
@@ -117,7 +120,7 @@ end
     end
   end
   
-  
+=end
 
 
   private

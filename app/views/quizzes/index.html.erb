@@ -3,7 +3,7 @@
 <h3 class=" mb-4 text-center  lead text-muted">Please choosoe a quiz category from below</h3>
 <br/>
 
-<!-- this is the original form_with code that is safe from SQL injection
+
 <div class="d-flex justify-content-center my-4">
   <div class="w-75" style="max-width: 600px;">
     <%= form_with url: quizzes_path, method: :get, local: true, class: "input-group" do %>
@@ -12,12 +12,14 @@
     <% end %>
   </div>
 </div>
--->
 
+
+
+<!-- unsafe code without the form_with code that allows SQL injection
 <div class="d-flex justify-content-center my-4">
   <div class="w-75" style="max-width: 600px;">
     
-    <!-- RAW HTML form (allows SQL injection) -->
+     //RAW HTML form (allows SQL injection) 
     <form action="/quizzes" method="get" class="input-group" autocomplete="off"
       data-turbo="false">
       <input 
@@ -33,15 +35,18 @@
 
   </div>
 </div>
+-->
 
-<!--  Reflected XSS (intentionally unsafe) -->
+<!--  Reflected XSS .html_safe has been removed(made safe) -->
 <% if params[:q].present? %>
-  <p class="text-center">You searched: <%= params[:q].html_safe %></p>
+  <p class="text-center">You searched: <%= params[:q] %></p>
 <% end %>
 
 
+
+<!-- DOM-based XSS section (vulnerable)
 <div id="dom-result" class="text-center text-danger fw-bold mt-3"></div>
-<!--  DOM-BASED XSS (intentionally vulnerable) -->
+ //DOM-BASED XSS (intentionally vulnerable) 
 <script>
   // DOM XSS (intentionally vulnerable)
   const domParam = new URLSearchParams(window.location.search).get("dom");
@@ -51,12 +56,14 @@
     document.getElementById("dom-result").innerHTML = domParam;
   }
 </script>
-
+-->
 
 
 
 
  <!--  (allows SQL injection) in the browser (quizzes?debug=1) reveals all the user sensitive data  -->
+ 
+ <!--  This section exposes sensitive data when ?debug=1 is added to the URL
 <% if params[:debug].present? %>
   <div class="container my-4">
     <div class="alert alert-danger">
@@ -74,21 +81,21 @@
     </pre>
   </div>
 <% end %>
-
+-->
 
 
 <br/>
 
-<!-- added .html_safe for stored xss -->
+<!-- removed .html_safe for stored xss (made safe) -->
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
   <% @quizzes.each do |quiz| %>
     <div class="col">
       <div class="card h-100 shadow-sm">
 
         <div class="card-body text-center">
-          <h4 class="card-title mb-2"><%= quiz.title.html_safe %></h4>
+          <h4 class="card-title mb-2"><%= quiz.title %></h4>
           <p class="card-text text-muted">
-            <%= truncate(quiz.description, length: 80).html_safe %>
+            <%= truncate(quiz.description, length: 80) %>
           </p>
         </div>
 

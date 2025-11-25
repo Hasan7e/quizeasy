@@ -1,13 +1,13 @@
 <div id="<%= dom_id quiz %>">
   <p>
     <strong>Title:</strong>
-    <%= quiz.title.html_safe %>
+    <%= quiz.title %>
   </p>
 
   <p>
     <strong>Description:</strong>
-    <%= quiz.description.html_safe %>
+    <%= quiz.description %>
   </p>
 
 </div>
-<!-- added .html_safe for for stored xss -->
+<!-- removed .html_safe for for stored xss(made safe) -->
