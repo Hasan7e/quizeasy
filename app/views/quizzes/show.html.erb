@@ -24,9 +24,13 @@
 
 <div class="d-flex gap-2 mt-3">
   <%= link_to "Take quiz", take_quiz_path(@quiz), class: "btn btn-success btn-sm" %>
-  <%= link_to "Edit this quiz", edit_quiz_path(@quiz), class: "btn btn-outline-secondary btn-sm" %>
   <%= link_to "Back to quizzes", quizzes_path, class: "btn btn-outline-primary btn-sm" %>
+
+  <% if current_user&.admin? %>
+  <%= link_to "Edit this quiz", edit_quiz_path(@quiz), class: "btn btn-outline-secondary btn-sm" %>
+  
   <%= button_to "Destroy this quiz", @quiz, method: :delete,
-        data: { turbo_confirm: "Are you sure?" },
-        class: "btn btn-outline-danger btn-sm" %>
+      data: { turbo_confirm: "Are you sure?" },
+      class: "btn btn-outline-danger btn-sm" %>
+  <% end %>
 </div>

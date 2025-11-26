@@ -11,10 +11,16 @@
     </div>
   <% end %>
 
+
   <div>
-    <%= form.label :quiz_id, style: "display: block" %>
-    <%= form.text_field :quiz_id %>
-  </div>
+  <%= form.label :quiz_id, "Select Quiz", style: "display: block" %>
+
+  <%= form.collection_select :quiz_id, Quiz.all, :id,
+        ->(quiz) { "#{quiz.id} — #{quiz.title}" },
+        { prompt: "Choose a quiz" },
+        { class: "form-select", style: "width: 100%;" } %>
+</div>
+
 
   <div>
     <%= form.label :text, style: "display: block" %>

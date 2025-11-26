@@ -109,7 +109,10 @@
   <% end %>
 </div>
 
+
+<% if current_user&.admin? %>
 <div class="text-center mt-4">
   <%= link_to "New Quiz", new_quiz_path, class: "btn btn-primary" %>
 </div>
+<% end %>
 

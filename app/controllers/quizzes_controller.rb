@@ -1,6 +1,13 @@
 class QuizzesController < ApplicationController
   before_action :set_quiz, only: [:show, :edit, :update, :destroy, :take, :submit, :submitted]
 
+before_action :authenticate_user!, except: [:index, :show, :take]
+
+before_action :require_admin!, except: [:index, :show, :take, :submit, :submitted]
+
+
+
+
   # GET /quizzes or /quizzes.json
   def index
     @quizzes = Quiz.all
@@ -133,4 +140,14 @@ class QuizzesController < ApplicationController
     def quiz_params
       params.expect(quiz: [ :title, :description ])
     end
+
+    
+    def require_admin!
+      unless current_user&.admin?
+        redirect_to root_path, alert: "Not authorized to modify quizzes."
+      end   
+    end
+
+
+
 end
