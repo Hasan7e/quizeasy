@@ -11,4 +11,17 @@ def configure_permitted_parameters
   devise_parameter_sanitizer.permit(:sign_up, keys: [:phone_number])
   devise_parameter_sanitizer.permit(:account_update, keys: [:phone_number])
 end
+
+private
+
+
+#make sure only admin users can access certain actions
+def require_admin!
+  unless current_user&.admin?
+    redirect_to root_path, alert: "Not authorized."
+  end
+end
+
+
+
 end

@@ -1,4 +1,7 @@
 class ChoicesController < ApplicationController
+  before_action :authenticate_user!
+  before_action :require_admin!
+
   before_action :set_choice, only: %i[ show edit update destroy ]
 
   # GET /choices or /choices.json
