@@ -310,4 +310,15 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+  
+
+  Warden::Manager.after_authentication do |user, auth, opts|
+    Rails.logger.info("[LOGIN SUCCESS] #{user.email} logged in at #{Time.current}") if user
+  end
+  
+  Warden::Manager.before_failure do |env, opts|
+    Rails.logger.warn("[LOGIN FAILED] Attempt from IP #{env['REMOTE_ADDR']} at #{Time.current}")
+  end
+  
+  
 end
