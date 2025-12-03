@@ -11,21 +11,21 @@ before_action :configure_permitted_parameters, if: :devise_controller?
 protected
 
 def configure_permitted_parameters
-  devise_parameter_sanitizer.permit(:sign_up, keys: [:phone_number])
-  devise_parameter_sanitizer.permit(:account_update, keys: [:phone_number])
+  devise_parameter_sanitizer.permit(:sign_up, keys: [ :phone_number ])
+  devise_parameter_sanitizer.permit(:account_update, keys: [ :phone_number ])
 end
 
 private
 
 
-#make sure only admin users can access certain actions
+# make sure only admin users can access certain actions
 def require_admin!
   unless current_user&.admin?
     redirect_to root_path, alert: "Not authorized."
   end
 end
 
-#auto logout after 30 minutes of inactivity
+# auto logout after 30 minutes of inactivity
 def session_expiration
   if session[:last_seen] && session[:last_seen] < 30.minutes.ago
     sign_out current_user
@@ -34,11 +34,10 @@ def session_expiration
   session[:last_seen] = Time.current
 end
 
-#log admin actions for auditing
-def log_admin_actions
-  if current_user&.admin?
-    Rails.logger.info("[ADMIN ACTION] #{current_user.email} accessed #{controller_name}##{action_name} at #{Time.current}")
+  # log admin actions for auditing
+  def log_admin_actions
+    if current_user&.admin?
+      Rails.logger.info("[ADMIN ACTION] #{current_user.email} accessed #{controller_name}##{action_name} at #{Time.current}")
+    end
   end
-end
-
 end
