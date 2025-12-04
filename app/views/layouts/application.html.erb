@@ -29,6 +29,11 @@
   <body>
 
     <%= render "shared/navbar" %>
+    <% flash.each do |key, message| %>
+  <div class="alert alert-<%= key == "alert" ? "danger" : "success" %> mt-3 text-center">
+    <%= message %>
+  </div>
+<% end %>
 
     <%= yield %>
 

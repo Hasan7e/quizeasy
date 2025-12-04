@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_26_210059) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_04_162801) do
   create_table "answers", force: :cascade do |t|
     t.integer "attempt_id", null: false
     t.integer "question_id", null: false
@@ -65,8 +65,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_26_210059) do
     t.datetime "updated_at", null: false
     t.string "phone_number"
     t.boolean "admin"
+    t.integer "failed_attempts", default: 0, null: false
+    t.string "unlock_token"
+    t.datetime "locked_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
   add_foreign_key "answers", "attempts"
